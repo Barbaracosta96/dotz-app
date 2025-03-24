@@ -1,0 +1,39 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "João da Silva",
+      "email": "joao@example.com",
+      "senha": "senha123",
+      "telefone": "11999999999",
+      "endereco": {
+        "rua": "Rua A",
+        "numero": "123",
+        "complemento": "Apto 101",
+        "cep": "01000000",
+        "cidade": "São Paulo",
+        "estado": "SP"
+      },
+      "saldo": 10000,
+      "extrato": [
+        { "id": 1, "data": "2023-10-26", "descricao": "Crédito de Boas-vindas", "valor": 500 },
+        { "id": 2, "data": "2023-10-27", "descricao": "Resgate de Produto", "valor": -2000 }
+      ],
+      "pedidos": [
+        { "id": 1, "data": "2023-10-27", "produto": "Fone de Ouvido", "status": "Em processamento" }
+      ]
+    }
+  ],
+  "produtos": [
+    { "id": 1, "nome": "Fone de Ouvido", "categoria": "Eletrônicos", "subcategoria": "Áudio", "preco": 2000, "disponibilidade": true },
+    { "id": 2, "nome": "Camiseta", "categoria": "Vestuário", "subcategoria": "Masculino", "preco": 1000, "disponibilidade": true }
+  ],
+  "categorias": [
+    { "id": 1, "nome": "Eletrônicos" },
+    { "id": 2, "nome": "Vestuário" }
+  ],
+  "subcategorias": [
+    { "id": 1, "nome": "Áudio", "categoriaId": 1 },
+    { "id": 2, "nome": "Masculino", "categoriaId": 2 }
+  ]
+}
