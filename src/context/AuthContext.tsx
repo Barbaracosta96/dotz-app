@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { User } from '../types/User';
 
 interface AuthContextProps {
   user: User | null;
@@ -48,6 +49,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
-//types
-import { User } from '../types/User';

@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { User } from '../types/User';
 import ErrorMessage from '../components/ErrorMessage';
-import { schema } from '@hookform/resolvers/ajv/src/__tests__/__fixtures__/data.js';
 
 // Estilos Componentes
 const LoginPage = styled.div`
@@ -25,82 +24,79 @@ const FormStyled = styled.form`
 
 const Input = styled.input`
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-  margin-bottom: 5px;
 `;
 
 const Button = styled.button`
+  padding: 10px;
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 12px 20px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+
   &:hover {
     background-color: #0056b3;
   }
 `;
+
+// Schema de validação
+const schema = yup.object().shape({
+  email: yup.string().email('Email inválido').required('Email é obrigatório'),
+  senha: yup.string().required('Senha é obrigatória')
+});
 
 interface FormData {
   email: string;
   senha: string;
 }
 
-const Login: React.FC = () => {
+function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema)
   });
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [error, setError] = useState<string>('');
 
   const onSubmit = async (data: FormData) => {
     try {
-      setLoginError(null); // Limpa o erro anterior
-      const response = await api.get(`/usuarios?email=${data.email}`);
-
-      if (response.data.length > 0) {
-        const user: User = response.data[0];
-
-        if (user.senha === data.senha) {
-          login(user);
-          navigate('/');
-        } else {
-          setLoginError('Email ou senha incorretos.');
+      const response = await api.get<User[]>('/usuarios', {
+        params: {
+          email: data.email
         }
-      } else {
-        setLoginError('Email ou senha incorretos.');
+      });
+
+      const user = response.data[0];
+
+      if (!user || user.senha !== data.senha) {
+        setError('Email ou senha inválidos');
+        return;
       }
-    } catch (error: any) {
-      console.error('Erro ao fazer login:', error);
-      setLoginError(`Erro ao fazer login: ${error.message}`);
+
+      login(user);
+      navigate('/');
+    } catch (error) {
+      setError('Erro ao fazer login');
     }
   };
 
   return (
     <LoginPage>
       <h2>Login</h2>
-      {loginError && <ErrorMessage>{loginError}</ErrorMessage>}
+      {error && <ErrorMessage message={error} />}
       <FormStyled onSubmit={handleSubmit(onSubmit)}>
-        <Label htmlFor="email">Email:</Label>
-        <Input type="email" id="email" {...register('email')} />
-        <ErrorMessage>{errors.email?.message}</ErrorMessage>
-
-        <Label htmlFor="senha">Senha:</Label>
-        <Input type="password" id="senha" {...register('senha')} />
-        <ErrorMessage>{errors.senha?.message}</ErrorMessage>
-
-        <Button type="submit">Login</Button>
+        <Input {...register('email')} placeholder="Email" type="email" />
+        {errors.email && <ErrorMessage message={errors.email.message || ''} />}
+        
+        <Input {...register('senha')} placeholder="Senha" type="password" />
+        {errors.senha && <ErrorMessage message={errors.senha.message || ''} />}
+        
+        <Button type="submit">Entrar</Button>
       </FormStyled>
     </LoginPage>
   );
-};
+}
 
 export default Login;

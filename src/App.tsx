@@ -1,5 +1,5 @@
 import React, { JSX } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Saldo from './pages/Saldo';
 import Produtos from './pages/Produtos';
 import GlobalStyle from './styles/GlobalStyles';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { useAuth } from './context/AuthContext';
 
 const AppContainer = styled.div`
   display: flex;
@@ -24,24 +24,22 @@ const MainContent = styled.main`
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <GlobalStyle />
-        <AppContainer>
-          <Header />
-          <MainContent>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/saldo" element={<PrivateRoute><Saldo /></PrivateRoute>} />
-              <Route path="/produtos" element={<PrivateRoute><Produtos /></PrivateRoute>} />
-            </Routes>
-          </MainContent>
-          <Footer />
-        </AppContainer>
-      </Router>
-    </AuthProvider>
+    <>
+      <GlobalStyle />
+      <AppContainer>
+        <Header />
+        <MainContent>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/saldo" element={<PrivateRoute><Saldo /></PrivateRoute>} />
+            <Route path="/produtos" element={<PrivateRoute><Produtos /></PrivateRoute>} />
+          </Routes>
+        </MainContent>
+        <Footer />
+      </AppContainer>
+    </>
   );
 }
 

@@ -95,7 +95,7 @@ const Saldo: React.FC = () => {
 
   return (
     <SaldoPage>
-      {saldoError && <ErrorMessage>{saldoError}</ErrorMessage>}
+      {saldoError && <ErrorMessage message={saldoError} />}
       <SaldoContainer>
         <SaldoTitle>Seu Saldo</SaldoTitle>
         {saldo !== null ? (

@@ -82,7 +82,7 @@ const Produtos: React.FC = () => {
   return (
     <ProdutosPage>
       <Title>Produtos Disponíveis para Resgate</Title>
-      {produtosError && <ErrorMessage>{produtosError}</ErrorMessage>}
+      {produtosError && <ErrorMessage message={produtosError} />}
       <ProductList>
         {produtos.map(produto => (
           <ProductCard key={produto.id} product={produto} />
